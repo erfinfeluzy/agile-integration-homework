@@ -18,6 +18,7 @@ public class CamelRoute extends RouteBuilder {
 			.log("request body :\n ${body}")
 			.convertBodyTo(String.class)
 			.to("jms:queue:q.empi.deim.in?exchangePattern=InOnly")
+			.log("sent to queue (q.empi.deim.in) :\n ${body}")
 			.setBody(constant(2));
 
 		
