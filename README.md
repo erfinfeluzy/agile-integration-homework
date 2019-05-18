@@ -79,9 +79,17 @@ clean, install, and run spring boot. This module expose jolokia on port 11000
 mvn clean install spring-boot:run
 ```
 
+### 7. jUnit Test
+Run junit test after all application is up
+```
+cd $BASE_DIR/inbound-erf
+
+mvn test
+```
+
 ## TEST IT
 
-*Request* to `http://localhost:9098/cxf/demos/match` with payload:
+*Request* Test with Postman to `http://localhost:9098/cxf/demos/match` with payload:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <p:Person xmlns:p="http://www.app.customer.com"
