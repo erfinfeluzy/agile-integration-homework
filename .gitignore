@@ -1,6 +1,13 @@
 .DS_Store
+.classpath
+.project
+.settings
 */target/*
 */target/**
+*/bin/*
+*/bin/**
 */activemq-data/*
 */activemq-data/**
-
+*/.settings/*
+*/.settings/**
+.gitignore
