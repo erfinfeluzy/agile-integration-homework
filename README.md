@@ -63,7 +63,7 @@ This module expose jolokia on port 10000
 cd $BASE_DIR/xlate-erf
 ```
 
-clean, install, and run spring boot. This module expose jolokia on port 11000
+clean, install, and run spring boot. This module expose jolokia on port 12000
 ```
 mvn clean install spring-boot:run
 ```
@@ -78,3 +78,68 @@ clean, install, and run spring boot. This module expose jolokia on port 11000
 ```
 mvn clean install spring-boot:run
 ```
+
+## TEST IT
+
+*Request* to `http://localhost:9098/cxf/demos/match` with payload:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Person xmlns:p="http://www.app.customer.com"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.app.customer.com PatientDemographics.xsd ">
+
+  <p:age>30</p:age>
+  <p:legalname>
+    <p:given>First</p:given>
+    <p:family>Last</p:family>
+  </p:legalname>
+  <p:fathername>Dad</p:fathername>
+  <p:mothername>Mom</p:mothername>
+  <p:gender xsi:type="p:Code">
+    <p:code>Male</p:code>
+  </p:gender>
+</p:Person>
+```
+*Direct Response*
+```
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ESBResponse xmlns="http://www.response.app.customer.com">
+    <BusinessKey>ac6d243b-333c-4a70-8661-5c66c16cd571</BusinessKey>
+    <Published>true</Published>
+    <Comment>DONE</Comment>
+</ESBResponse>
+```
+check logs on `integration-test-server-erf`
+```
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Envelope xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns3="http://webservice.index.mdm.sun.com/">
+    <ns2:Body>
+        <ns3:executeMatchUpdate>
+            <callerInfo>
+                <application>App</application>
+                <applicationFunction>Function</applicationFunction>
+                <authUser>Xlate</authUser>
+            </callerInfo>
+            <sysObjBean>
+                <person>
+                    <fatherName>Dad</fatherName>
+                    <firstName>First</firstName>
+                    <gender>Male</gender>
+                </person>
+            </sysObjBean>
+        </ns3:executeMatchUpdate>
+    </ns2:Body>
+</ns2:Envelope>
+```
+Response from SOAP server
+```
+---------------------------
+ID: 2
+Response-Code: 200
+Encoding: UTF-8
+Content-Type: text/xml
+Headers: {}
+Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:executeMatchUpdateResponse xmlns:ns2="http://webservice.index.mdm.sun.com/"><return><EUID>Xlate</EUID><matchFieldChanged>false</matchFieldChanged><overlayDetected>false</overlayDetected><resultCode>1</resultCode></return></ns2:executeMatchUpdateResponse></soap:Body></soap:Envelope>
+--------------------------------------
+```
+
